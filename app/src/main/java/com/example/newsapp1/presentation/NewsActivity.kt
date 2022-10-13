@@ -84,6 +84,9 @@ class NewsActivity : ComponentActivity() {
                 Card(
                     backgroundColor = MaterialTheme.colors.primary,
                     modifier = Modifier.padding(vertical = 4.dp, horizontal = 8.dp)
+                        .clickable {
+                            //TODO handle click
+                        }
                 ) {
                     MessageCard(source)
                 }
