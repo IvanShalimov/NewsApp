@@ -21,3 +21,7 @@ What's need to improve:
 - Unit tests
 - Add Pagination
 
+P.S.
+Cool rebranding!!!
+
+![This is an image](https://github.com/IvanShalimov/NewsApp/blob/main/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png)
