@@ -3,8 +3,21 @@
 
 Work in progress(!!!)
 
-What's need to improve:
+What's done:
+1) Use  Jetpack Compose
+- Reduce boilerplate code
+- Haven't worked with it befor(+ new experience/ no commercial exp.)
+- Easy working with save state when the configuration changes
+2) Use Hilt
+- Before work only with Dagger2(+ new exp/ no commercial exp.)
+- Easier, Faster, more Beatiful
+3) ViewModel
+- MVVM's architecture which promote Google
+- Prefect fit with Jetpack COmpose
 
-View - remake on Android Compose
-Add Dagger2
-Solve extra issues
+What's need to improve:
+- Design. App's pretty ugly
+- Make network calls more elegant
+- Unit tests
+- Add Pagination
+
