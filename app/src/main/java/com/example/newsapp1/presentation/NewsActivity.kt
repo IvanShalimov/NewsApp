@@ -2,6 +2,7 @@ package com.example.newsapp1.presentation
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.animation.animateContentSize
@@ -53,6 +54,9 @@ class NewsActivity : ComponentActivity() {
                             topHeadlineViewModel.getTopHeadlines(source.id)
                         }
                     }
+                }
+                BackHandler {
+                    isDetail = false
                 }
             }
         }
