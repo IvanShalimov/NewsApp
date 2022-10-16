@@ -11,7 +11,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.NewsApp1">
+        android:theme="@style/Theme.NewsApp1"
+        android:name=".GachiNewsApplication">
         <activity
             android:exported="true"
             android:label="@string/title_activity_news"

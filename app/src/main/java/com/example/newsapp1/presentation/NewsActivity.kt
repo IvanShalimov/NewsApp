@@ -42,17 +42,19 @@ import com.example.newsapp1.presentation.mapper.SourcesItemMapper
 import com.example.newsapp1.presentation.mapper.TopHeadlinesMapper
 import com.example.newsapp1.presentation.models.ArticleItem
 import com.example.newsapp1.presentation.models.SourceItem
+import dagger.hilt.android.AndroidEntryPoint
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class NewsActivity : ComponentActivity() {
-
 
     private val sourceMapper: SourcesItemMapper by lazy { SourcesItemMapper() }
     private val topHeadlinesMapper by lazy { TopHeadlinesMapper() }
 
-    private val sourcesRepository = SourcesRepository()
+    @Inject lateinit var sourcesRepository: SourcesRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
