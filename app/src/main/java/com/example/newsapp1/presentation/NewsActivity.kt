@@ -122,14 +122,14 @@ class NewsActivity : ComponentActivity() {
     @Composable
     fun SourceCard(source: SourceItem) {
         Row( modifier = Modifier.padding(8.dp)) {
-            Image(
+            /*Image(
                 painter = painterResource(id = R.drawable.profile_picture),
                 contentDescription = "Contact profile picture",
                 modifier = Modifier
                     .size(40.dp)
                     .clip(CircleShape)
                     .border(1.5.dp, MaterialTheme.colors.primary, CircleShape)
-            )
+            )*/
             Spacer(modifier = Modifier.width(8.dp))
 
             Column() {
