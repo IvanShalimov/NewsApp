@@ -37,8 +37,10 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import com.example.newsapp1.domain.SourcesRepository
 import com.example.newsapp1.domain.network.models.SourcesResponse
+import com.example.newsapp1.domain.network.models.TopHeadlinesResponse
 import com.example.newsapp1.presentation.mapper.SourcesItemMapper
 import com.example.newsapp1.presentation.mapper.TopHeadlinesMapper
+import com.example.newsapp1.presentation.models.ArticleItem
 import com.example.newsapp1.presentation.models.SourceItem
 import retrofit2.Call
 import retrofit2.Callback
@@ -48,18 +50,29 @@ class NewsActivity : ComponentActivity() {
 
 
     private val sourceMapper: SourcesItemMapper by lazy { SourcesItemMapper() }
-    //private val topHeadlinesMapper by lazy { TopHeadlinesMapper() }
+    private val topHeadlinesMapper by lazy { TopHeadlinesMapper() }
 
-    val sourcesRepository = SourcesRepository()
+    private val sourcesRepository = SourcesRepository()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             var sources by rememberSaveable { mutableStateOf(listOf<SourceItem>())}
-            requestSources { s -> sources = s }
+            var topHeadlines by rememberSaveable {mutableStateOf(listOf<ArticleItem>()) }
+            var isDetail by rememberSaveable { mutableStateOf(false)}
+
             NewsApp1Theme {
                 Surface(modifier = Modifier.fillMaxSize()) {
-                    NewsSourcesList(sources)
+                    if (isDetail) {
+                        TopHeaders(topHeadlines)
+                    } else {
+                        requestSources { s -> sources = s }
+
+                        NewsSourcesList(sources) { source ->
+                            requestTopHeaders(source.id) { tops -> topHeadlines = tops }
+                            isDetail = !isDetail
+                        }
+                    }
                 }
             }
         }
@@ -77,25 +90,37 @@ class NewsActivity : ComponentActivity() {
         })
     }
 
+    private fun requestTopHeaders(id: String, callback: (tops: List<ArticleItem>) -> Unit) {
+        sourcesRepository.getTopHeaders(id, object : Callback<TopHeadlinesResponse> {
+            override fun onResponse(call: Call<TopHeadlinesResponse>, response: Response<TopHeadlinesResponse>) {
+                callback(topHeadlinesMapper.map(response.body() as TopHeadlinesResponse))
+            }
+
+            override fun onFailure(call: Call<TopHeadlinesResponse>, t: Throwable) {
+
+            }
+
+        })
+    }
+
     @Composable
-    fun NewsSourcesList(sources:  List<SourceItem>) {
+    fun NewsSourcesList(sources:  List<SourceItem>, onItemClicked: (item: SourceItem) -> Unit) {
         LazyColumn {
             items(sources) {source ->
                 Card(
                     backgroundColor = MaterialTheme.colors.primary,
-                    modifier = Modifier.padding(vertical = 4.dp, horizontal = 8.dp)
-                        .clickable {
-                            //TODO handle click
-                        }
+                    modifier = Modifier
+                        .padding(vertical = 4.dp, horizontal = 8.dp)
+                        .clickable { onItemClicked(source) }
                 ) {
-                    MessageCard(source)
+                    SourceCard(source)
                 }
             }
         }
     }
 
     @Composable
-    fun MessageCard(source: SourceItem) {
+    fun SourceCard(source: SourceItem) {
         Row( modifier = Modifier.padding(8.dp)) {
             Image(
                 painter = painterResource(id = R.drawable.profile_picture),
@@ -107,13 +132,7 @@ class NewsActivity : ComponentActivity() {
             )
             Spacer(modifier = Modifier.width(8.dp))
 
-            var isExpanded by remember { mutableStateOf(false) }
-            val surfaceColor by animateColorAsState(
-                if (isExpanded) MaterialTheme.colors.primary else MaterialTheme.colors.surface,
-            )
-
-
-            Column(modifier = Modifier.clickable { isExpanded = !isExpanded }) {
+            Column() {
                 Text(
                     source.name,
                     color = MaterialTheme.colors.secondary,
@@ -123,14 +142,12 @@ class NewsActivity : ComponentActivity() {
 
                 Surface(
                     shape = MaterialTheme.shapes.medium,
-                    color = surfaceColor,
                     modifier = Modifier
                         .animateContentSize()
                         .padding(1.dp)) {
                     Text(
                         source.description,
                         modifier = Modifier.padding(all = 4.dp),
-                        maxLines = if(isExpanded) Int.MAX_VALUE else 1,
                         style = MaterialTheme.typography.body1
                     )
                 }
@@ -139,5 +156,29 @@ class NewsActivity : ComponentActivity() {
 
         }
 
+    }
+
+    @Composable
+    fun TopHeaders(articleItems: List<ArticleItem>) {
+        LazyColumn {
+            items(articleItems) { headline ->
+              HeadlineCard(headline)
+            }
+        }
+    }
+
+    @Composable
+    fun HeadlineCard(headline: ArticleItem) {
+        Card(
+            modifier = Modifier.padding(vertical = 4.dp, horizontal = 8.dp)
+        ) {
+            Column {
+                Text(headline.title)
+                Text(headline.description)
+                Text(headline.author)
+                Text(headline.publishedAt)
+            }
+
+        }
     }
 }
