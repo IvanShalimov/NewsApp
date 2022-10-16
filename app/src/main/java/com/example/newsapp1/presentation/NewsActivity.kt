@@ -57,8 +57,8 @@ class NewsActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            var sources by rememberSaveable { mutableStateOf(listOf<SourceItem>())}
-            var topHeadlines by rememberSaveable {mutableStateOf(listOf<ArticleItem>()) }
+            var topHeadlines by remember { mutableStateOf(listOf<ArticleItem>()) }
+            var sources by remember { mutableStateOf(listOf<SourceItem>())}
             var isDetail by rememberSaveable { mutableStateOf(false)}
 
             NewsApp1Theme {
