@@ -12,9 +12,11 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
@@ -24,11 +26,18 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.request.RequestOptions
 import com.example.newsapp1.presentation.models.ArticleItem
 import com.example.newsapp1.presentation.models.SourceItem
 import com.example.newsapp1.presentation.ui.theme.NewsApp1Theme
+import com.skydoves.landscapist.ImageOptions
+import com.skydoves.landscapist.glide.GlideImage
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -67,7 +76,6 @@ class NewsActivity : ComponentActivity() {
         LazyColumn {
             items(sources) { source ->
                 Card(
-                    backgroundColor = MaterialTheme.colors.primary,
                     modifier = Modifier
                         .padding(vertical = 4.dp, horizontal = 8.dp)
                         .clickable { onItemClicked(source) }
@@ -81,17 +89,7 @@ class NewsActivity : ComponentActivity() {
     @Composable
     fun SourceCard(source: SourceItem) {
         Row(modifier = Modifier.padding(8.dp)) {
-            /*Image(
-                painter = painterResource(id = R.drawable.profile_picture),
-                contentDescription = "Contact profile picture",
-                modifier = Modifier
-                    .size(40.dp)
-                    .clip(CircleShape)
-                    .border(1.5.dp, MaterialTheme.colors.primary, CircleShape)
-            )*/
-            Spacer(modifier = Modifier.width(8.dp))
-
-            Column() {
+            Column {
                 Text(
                     source.name,
                     color = MaterialTheme.colors.secondary,
@@ -130,12 +128,22 @@ class NewsActivity : ComponentActivity() {
         Card(
             modifier = Modifier.padding(vertical = 4.dp, horizontal = 8.dp)
         ) {
-            Column {
-                Text(headline.title)
-                Text(headline.description)
-                Text(headline.author)
-                Text(headline.publishedAt)
+            Row(modifier = Modifier.padding(8.dp)) {
+                GlideImage(
+                    imageModel = { headline.thumbnail },
+                    modifier = Modifier
+                        .clip(CircleShape)
+                        .size(40.dp)
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Column {
+                    Text(headline.title)
+                    Text(headline.description)
+                    Text(headline.author)
+                    Text(headline.publishedAt)
+                }
             }
+
         }
     }
 }
