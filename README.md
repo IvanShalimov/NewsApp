@@ -6,10 +6,10 @@ Work in progress(!!!)
 What's done:
 1) Use  Jetpack Compose
 - Reduce boilerplate code
-- Haven't worked with it before(+ new experience/ no commercial exp.)
+- Haven't worked with it before. New experience&
 - Easy working with save state when the configuration changes
 2) Use Hilt
-- Before work only with Dagger2(+ new exp/ no commercial exp.)
+- Before work only with Dagger2(raw). New experience&
 - Easier, Faster, more Beautiful
 3) ViewModel
 - MVVM's architecture which promote Google
