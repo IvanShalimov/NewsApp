@@ -12,8 +12,9 @@ interface NewsService {
     fun getSources(@Query("apiKey") apiKey: String): Call<SourcesResponse>
 
     @GET("v2/top-headlines")
-    fun getTopHeadlines(
+    suspend fun getNewTopHeadlines(
         @Query("sources") source: String,
-        @Query("apiKey") apiKey: String
-    ): Call<TopHeadlinesResponse>
+        @Query("apiKey") apiKey: String,
+        @Query("page") page: Int
+    ): TopHeadlinesResponse
 }

@@ -21,8 +21,11 @@ class SourcesRepository
         sourcesResponses.enqueue(callback)
     }
 
-    fun getTopHeaders(source: String, callback: Callback<TopHeadlinesResponse>) {
-        val topHeadersResponse = newsService.getTopHeadlines(source, apiKey)
-        topHeadersResponse.enqueue(callback)
+    suspend fun getNewTopHeaders(source: String, nextPage: Int): TopHeadlinesResponse {
+        return newsService.getNewTopHeadlines(
+            source = source,
+            apiKey = apiKey,
+            page = nextPage
+        )
     }
 }

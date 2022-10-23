@@ -29,17 +29,23 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
+import androidx.paging.PagingData
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.newsapp1.presentation.models.ArticleItem
 import com.example.newsapp1.presentation.models.SourceItem
 import com.example.newsapp1.presentation.ui.theme.NewsApp1Theme
+import com.example.newsapp1.presentation.viewmodels.SourceViewModel
+import com.example.newsapp1.presentation.viewmodels.TopHeadlinesViewModel
 import com.skydoves.landscapist.glide.GlideImage
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.Flow
 
 @AndroidEntryPoint
 class NewsActivity : ComponentActivity() {
 
     private val sourceViewModel: SourceViewModel by viewModels()
     private val topHeadlineViewModel: TopHeadlinesViewModel by viewModels()
+    private var sourceId: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,12 +56,13 @@ class NewsActivity : ComponentActivity() {
             NewsApp1Theme {
                 Surface(modifier = Modifier.fillMaxSize()) {
                     if (isDetail) {
-                        TopHeaders(topHeadlineViewModel.topHeadlines)
+                        TopHeaders(topHeadlineViewModel.getNewTopHeadlines(sourceId))
                     } else {
                         sourceViewModel.getSources()
                         NewsSourcesList(sourceViewModel.sources) { source ->
+                            sourceId = source.id
                             isDetail = true
-                            topHeadlineViewModel.getTopHeadlines(source.id)
+
                         }
                     }
                 }
@@ -110,10 +117,13 @@ class NewsActivity : ComponentActivity() {
     }
 
     @Composable
-    fun TopHeaders(articleItems: List<ArticleItem>) {
+    fun TopHeaders(topHeadlines: Flow<PagingData<ArticleItem>>/*articleItems: List<ArticleItem>*/) {
+        val headlines = topHeadlines.collectAsLazyPagingItems()
         LazyColumn {
-            items(articleItems) { headline ->
-                HeadlineCard(headline)
+            items(headlines.itemCount) { index ->
+                headlines[index]?.let {
+                    HeadlineCard(it)
+                }
             }
         }
     }

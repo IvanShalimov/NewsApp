@@ -18,12 +18,14 @@ What's done:
 - https://github.com/skydoves/landscapist
 - Helps to work with Glide in Jetpack Compose
 - Use Glide because I have worked with it before
+5) Paging 3
+- Best practice for work with Jetpack Compose and coroutines
+- I have no experience in it before
 
 What's need to improve:
 - Design. App's pretty ugly
 - Make network calls more elegant
 - Unit tests
-- Add Pagination
 
 P.S.
 Cool rebranding!!!

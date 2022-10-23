@@ -7,8 +7,8 @@ import com.example.newsapp1.presentation.mapper.TopHeadlinesMapper
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ActivityComponent
 import dagger.hilt.android.components.ViewModelComponent
+import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -24,6 +24,7 @@ object RetrofitModule {
             .build()
             .create(NewsService::class.java)
     }
+
 
     @ApiKey
     @Provides

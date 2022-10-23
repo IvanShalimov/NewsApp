@@ -1,4 +1,4 @@
-package com.example.newsapp1.presentation
+package com.example.newsapp1.presentation.viewmodels
 
 import android.util.Log
 import androidx.compose.runtime.getValue
