@@ -49,6 +49,7 @@ class NewsActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        sourceViewModel.getSources()
 
         setContent {
             var isDetail by rememberSaveable { mutableStateOf(false) }
@@ -58,11 +59,9 @@ class NewsActivity : ComponentActivity() {
                     if (isDetail) {
                         TopHeaders(topHeadlineViewModel.getNewTopHeadlines(sourceId))
                     } else {
-                        sourceViewModel.getSources()
                         NewsSourcesList(sourceViewModel.sources) { source ->
                             sourceId = source.id
                             isDetail = true
-
                         }
                     }
                 }

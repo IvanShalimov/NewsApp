@@ -16,9 +16,8 @@ class SourcesRepository
     @ApiKey private val apiKey: String
 ) {
 
-    fun getSources(callback: Callback<SourcesResponse>) {
-        val sourcesResponses = newsService.getSources(apiKey)
-        sourcesResponses.enqueue(callback)
+    suspend fun getSources(): SourcesResponse {
+        return newsService.getSources(apiKey)
     }
 
     suspend fun getNewTopHeaders(source: String, nextPage: Int): TopHeadlinesResponse {

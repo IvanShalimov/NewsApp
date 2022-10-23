@@ -1,18 +1,17 @@
 package com.example.newsapp1.presentation.viewmodels
 
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.example.newsapp1.domain.SourcesRepository
-import com.example.newsapp1.domain.network.models.SourcesResponse
 import com.example.newsapp1.presentation.mapper.SourcesItemMapper
 import com.example.newsapp1.presentation.models.SourceItem
 import dagger.hilt.android.lifecycle.HiltViewModel
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -25,15 +24,11 @@ class SourceViewModel
     var sources by mutableStateOf(listOf<SourceItem>())
 
     fun getSources() {
-        sourcesRepository.getSources(object : Callback<SourcesResponse> {
-            override fun onResponse(call: Call<SourcesResponse>, response: Response<SourcesResponse>) {
-                sources = sourceMapper.map(response.body() as SourcesResponse)
+        CoroutineScope(Dispatchers.IO).launch {
+            withContext(Dispatchers.Main) {
+                sources = sourceMapper.map(sourcesRepository.getSources())
             }
-
-            override fun onFailure(call: Call<SourcesResponse>, t: Throwable) {
-                Log.d("test", "${t.message}")
-            }
-        })
+        }
     }
 
 }
