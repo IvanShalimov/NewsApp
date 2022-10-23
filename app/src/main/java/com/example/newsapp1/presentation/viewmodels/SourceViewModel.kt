@@ -24,11 +24,9 @@ class SourceViewModel
     var sources by mutableStateOf(listOf<SourceItem>())
 
     fun getSources() {
-        CoroutineScope(Dispatchers.IO).launch {
-            withContext(Dispatchers.Main) {
-                sources = sourceMapper.map(sourcesRepository.getSources())
-            }
+
+        CoroutineScope(Dispatchers.Main).launch {
+            sources = sourceMapper.map(sourcesRepository.getSources())
         }
     }
-
 }

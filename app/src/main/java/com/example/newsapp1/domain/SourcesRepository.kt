@@ -4,10 +4,6 @@ import com.example.newsapp1.di.qualifier.ApiKey
 import com.example.newsapp1.domain.network.NewsService
 import com.example.newsapp1.domain.network.models.SourcesResponse
 import com.example.newsapp1.domain.network.models.TopHeadlinesResponse
-import com.example.newsapp1.presentation.models.SourceItem
-import retrofit2.Callback
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Inject
 
 class SourcesRepository

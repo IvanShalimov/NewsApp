@@ -1,4 +1,4 @@
-package com.example.newsapp1.presentation
+package com.example.newsapp1.presentation.sources
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
@@ -20,10 +20,10 @@ class TopHeadlinesSource
     }
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, ArticleItem> {
-        try {
+        return try {
             val nextPage = params.key ?: 1
             val response = repository.getNewTopHeaders(source = source, nextPage = nextPage)
-            return LoadResult.Page(
+            LoadResult.Page(
                 data = topHeadlinesMapper.map(response),
                 prevKey =
                 if (nextPage == 1) null
@@ -31,7 +31,7 @@ class TopHeadlinesSource
                 nextKey = nextPage.plus(1)
             )
         } catch (e: Exception) {
-            return LoadResult.Error(
+            LoadResult.Error(
                 e
             )
         }
