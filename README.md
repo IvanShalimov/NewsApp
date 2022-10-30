@@ -62,9 +62,9 @@ normally have used for this kind of task.
 5) Paging 3
 - Best practice for work with Jetpack Compose and coroutines
 - I have no experience in it before
+6) Date format in /v2/top-headlines is different time to time. That is a reason why I stayed date-field a raw string.
 
 ### What's need to improve:
-- Design. App's pretty ugly
 - Unit tests
 
 P.S.
